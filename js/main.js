@@ -37,7 +37,8 @@ form.addEventListener('submit',function(e){
                         Swal.fire({
                             icon:'success',
                             title:'Guia guardada'
-                        })
+                        });
+                        saveGuide();
                     } else if (result.isDenied){
                         Swal.fire({
                             icon: 'error',
@@ -53,4 +54,42 @@ form.addEventListener('submit',function(e){
                 })
             }
         });
-})
+});
+
+//crea el objeto assignedGuide a los que les asigna el valor de lo obtenido en el form
+function saveGuide(){
+    function assignedGuide(delivery,numberGuide){
+        this.delivery=delivery;
+        this.numberGuide=numberGuide;
+    }
+    let delivery = document.getElementById('selectDelivery').value;
+    let guide = document.getElementById('numberGuide').value;
+
+    newGuide = new assignedGuide(delivery,guide)
+
+    //llama a la funcion que crea el array de objetos
+    createArrayObj(newGuide);
+}
+
+function createArrayObj(newGuide){
+    //crea un array que evalua si ya existe un array en el localstorage sino crea uno nuevo
+    let guideList = JSON.parse(localStorage.getItem("guideList")) || [];
+    //hace un push al array
+    guideList.push(newGuide);
+    localStorage.guideList =  JSON.stringify(guideList);
+
+    //cuenta los datos del array y los utiliza para el contador.
+    localStorage.counter = parseInt(guideList.length);
+    document.querySelector('.count').textContent = parseInt(localStorage.counter);
+}
+
+//crea la escucha para el nboton de reinicio
+const restartButton = document.querySelector('.btn-restart');
+restartButton.addEventListener('click', deleteLocalStorage); 
+
+//borra las variables en el localStorage, array y contador.
+function deleteLocalStorage(){
+    localStorage.clear();
+    //actualiza el contador
+    document.querySelector('.count').textContent = parseInt(localStorage.counter);
+}
