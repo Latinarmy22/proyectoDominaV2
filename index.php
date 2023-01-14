@@ -41,11 +41,14 @@
                         <h5 class="card-title">Total asignados</h5>
                         <hr>
                         <div class="counter">
-                            <p>Total</p>
-                            <!-- <p class="count"></p> -->
-                            <span class="count"></span>
+                            <div>
+                                <p>Total:</p>
+                            </div>
+                            <div>
+                                <span class="count"></span>
+                            </div>
                         </div>
-                        <a href="#" class="btn btn-primary">Descargar</a>
+                        <a href="#" class="btn btn-primary btn-download">Descargar</a>
                         <a href="#" class="btn btn-primary btn-restart">Reiniciar</a>
                     </div>
                 </div>

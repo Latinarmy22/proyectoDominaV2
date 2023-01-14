@@ -38,12 +38,14 @@ form.addEventListener('submit',function(e){
                             icon:'success',
                             title:'Guia guardada'
                         });
+                        form.reset();
                         saveGuide();
                     } else if (result.isDenied){
                         Swal.fire({
                             icon: 'error',
                             title: 'No se guardo la guia'
                         })
+                        form.reset();
                     }
                 })
             } else if (data === 'error'){
@@ -93,3 +95,34 @@ function deleteLocalStorage(){
     //actualiza el contador
     document.querySelector('.count').textContent = parseInt(localStorage.counter);
 }
+
+//crea el evento para el boton de la descarga.
+const downloadButton = document.querySelector('.btn-download');
+downloadButton.addEventListener('click', generateNameFile);
+
+//genera el nombre del archivo
+function generateNameFile(){
+    let date = new Date();
+    let dateNotFormat = date.toLocaleDateString();
+    let dateFormat = dateNotFormat.replaceAll('/','')
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+
+    let nameFile = 'ASIGNACION_' + dateFormat + hours + minutes + seconds;
+    let content = JSON.stringify(localStorage.getItem('guideList'));
+    //llama a la funcion que crea el archivo
+    createFile(content,nameFile);
+}
+
+//crea el archivo creando un blob.
+function createFile(content,name){
+    const a = document.createElement("a");
+        const archivo = new Blob([content], { type: 'text/plain' });
+        const url = URL.createObjectURL(archivo);
+        a.href = url;
+        a.download = name;
+        a.click();
+        URL.revokeObjectURL(url);
+}
+
